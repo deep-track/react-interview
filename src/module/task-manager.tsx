@@ -48,18 +48,24 @@ export default function TaskManager() {
     // This is just a skeleton - the candidate needs to implement this
     console.log('Add task:', newTaskText);
 
+    
+    setTasks(
+      [...tasks, {id: tasks.length+1, title: newTaskText, completed: false}]
+    );
+
     // Clear the input field after attempting to add
     setNewTaskText('');
   };
 
   // TODO: Implement function to toggle task completion
-  const handleToggleComplete = (id: number) => {
+  const handleToggleComplete = (id: number ) => {
     // This is just a skeleton - the candidate needs to implement this
+        
     console.log('Toggle task:', id);
   };
 
   // TODO: Implement function to delete a task
-  const handleDeleteTask = (id: number) => {
+  const handleDeleteTask = (id: number ) => {
     // This is just a skeleton - the candidate needs to implement this
     console.log('Delete task:', id);
   };
