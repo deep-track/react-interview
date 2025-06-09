@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './TaskManager.css';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -39,29 +39,37 @@ export default function TaskManager() {
   const [newTaskText, setNewTaskText] = useState('');
 
   // State for the list of tasks - initialized with empty array
-  // This is a skeleton implementation that will pass rendering tests
-  // but fail functionality tests
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  // TODO: Implement function to add a new task
+  // Function to add a new task
   const handleAddTask = () => {
-    // This is just a skeleton - the candidate needs to implement this
-    console.log('Add task:', newTaskText);
+    const trimmedText = newTaskText.trim();
+    if (trimmedText === '') return;
 
-    // Clear the input field after attempting to add
-    setNewTaskText('');
+    // Calculate the next ID
+    const newId = tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1;
+
+    const newTask: Task = {
+      id: newId, // Use the calculated ID
+      title: trimmedText,
+      completed: false,
+    };
+    setTasks(prevTasks => [...prevTasks, newTask]);
+    setNewTaskText(''); // Clear the input field
   };
 
-  // TODO: Implement function to toggle task completion
+  // Function to toggle task completion
   const handleToggleComplete = (id: number) => {
-    // This is just a skeleton - the candidate needs to implement this
-    console.log('Toggle task:', id);
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
-  // TODO: Implement function to delete a task
+  // Function to delete a task
   const handleDeleteTask = (id: number) => {
-    // This is just a skeleton - the candidate needs to implement this
-    console.log('Delete task:', id);
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
   };
 
   return (

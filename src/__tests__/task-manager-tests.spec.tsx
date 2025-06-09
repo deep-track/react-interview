@@ -50,11 +50,12 @@ describe('TaskManager Component - Secret Tests', () => {
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
     // Optionally, check for visual indication like line-through style
-    expect(taskTextElement).toHaveStyle('text-decoration: line-through');
+    expect(taskTextElement).toHaveClass('line-through');
 
     fireEvent.click(checkbox);
     expect(checkbox).not.toBeChecked();
-    expect(taskTextElement).not.toHaveStyle('text-decoration: line-through');
+    expect(taskTextElement).not.toHaveClass('line-through');
+    expect(taskTextElement).toHaveClass('none'); // Check that the 'none' class is applied when not completed
   });
 
   it('should allow deleting a task', () => {
@@ -100,7 +101,7 @@ describe('TaskManager Component - Secret Tests', () => {
     const taskBCheckbox = screen.getByTestId('task-checkbox-2');
     fireEvent.click(taskBCheckbox);
     expect(taskBCheckbox).toBeChecked();
-    expect(screen.getByTestId('task-title-2')).toHaveStyle('text-decoration: line-through');
+    expect(screen.getByTestId('task-title-2')).toHaveClass('line-through');
 
     // Delete Task A
     const taskADeleteButton = screen.getByTestId('delete-button-1');
