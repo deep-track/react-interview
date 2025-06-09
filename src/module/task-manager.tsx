@@ -1,122 +1,239 @@
-
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import './TaskManager.css';
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
-// Task Manager Component
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { cn } from "@/lib/utils"; // Candidate can uncomment if needed for conditional styling
+
+// Patient Appointment Manager Component
 // Instructions for the candidate:
-// 1. Create a Task Manager application that allows users to:
-//    - Add a new task with a title (non-empty string).
-//    - Delete an existing task.
-//    - Toggle a task's completion status (mark as completed or not completed).
-// 2. The task list should persist when tasks are added, deleted, or toggled.
-// 3. Display tasks in a list, showing their title and completion status (e.g., a checkbox or text decoration).
+// 1. Create a Patient Appointment Manager application that allows doctors to:
+//    - Add a new patient appointment with a description (non-empty string).
+//    - Cancel an existing appointment.
+//    - Mark appointments as completed after the patient has been seen.
+//    - Categorize appointments by priority (High, Medium, Low).
+//    - Filter appointments by priority and completion status.
+// 2. The appointment list should persist when appointments are added, canceled, or marked as completed.
+// 3. Display appointments in a list, showing their description, priority, and completion status.
 // 4. Include basic styling to make the UI clean and user-friendly (use the provided TaskManager.css file).
-// 5. Handle edge cases like empty task titles gracefully (e.g., prevent adding empty tasks).
+// 5. Handle edge cases like empty appointment descriptions gracefully.
 // 6. Submit the completed TaskManager.jsx file by tomorrow.
 // Do NOT modify the import statements or the component name.
 
-// Example task object structure (for reference):
+// Example appointment object structure (for reference):
 // {
-//   id: number, // Unique identifier for the task
-//   title: string, // Task description
-//   completed: boolean // Completion status
+//   id: number, // Unique identifier for the appointment
+//   title: string, // Appointment description (patient name, reason for visit, etc.)
+//   completed: boolean, // Whether the patient has been seen
+//   priority: string // Priority level: "high", "medium", or "low"
 // }
 
-// Define the Task interface
+// Define the Appointment interface
+// This interface will be used by the candidate in their implementation
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Task {
   id: number;
   title: string;
   completed: boolean;
+  priority: "high" | "medium" | "low";
 }
 
 export default function TaskManager() {
-  // State for the new task input
-  const [newTaskText, setNewTaskText] = useState('');
+  // State for the new appointment input
+  const [newAppointmentTitle, setNewAppointmentTitle] = useState<string>("");
+  const [newAppointmentPriority, setNewAppointmentPriority] = useState<Task['priority']>("medium");
 
-  // State for the list of tasks - initialized with empty array
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // State for the list of appointments
+  const [appointments, setAppointments] = useState<Task[]>([]);
 
-  // Function to add a new task
-  const handleAddTask = () => {
-    const trimmedText = newTaskText.trim();
-    if (trimmedText === '') return;
+  // State for filter options
+  const [priorityFilter, setPriorityFilter] = useState<string>("all"); // "all", "low", "medium", "high"
+  const [statusFilter, setStatusFilter] = useState<string>("all"); // "all", "active", "completed"
 
-    // Calculate the next ID
-    const newId = tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1;
-
-    const newTask: Task = {
-      id: newId, // Use the calculated ID
-      title: trimmedText,
-      completed: false,
-    };
-    setTasks(prevTasks => [...prevTasks, newTask]);
-    setNewTaskText(''); // Clear the input field
+  // --- Event Handlers for Inputs and Filters ---
+  const handleNewAppointmentTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // TODO: Update newAppointmentTitle state
+    
   };
 
-  // Function to toggle task completion
+  const handleNewAppointmentPriorityChange = (value: Task['priority']) => {
+    // TODO: Update newAppointmentPriority state
+    
+  };
+
+  const handlePriorityFilterChange = (value: string) => {
+    // TODO: Update priorityFilter state
+    
+  };
+
+  const handleStatusFilterChange = (value: string) => {
+    // TODO: Update statusFilter state
+    
+  };
+
+  // --- Core Appointment Functions ---
+  const handleAddAppointment = () => {
+    // TODO: Implement adding a new appointment
+    // - Validate title is not empty
+    // - Create new task object with unique ID (e.g., Date.now() or a counter)
+    // - Add to appointments state
+    // - Clear input fields (setNewAppointmentTitle(""), setNewAppointmentPriority("medium"))
+    
+  };
+
   const handleToggleComplete = (id: number) => {
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+    // TODO: Toggle the 'completed' status of the appointment with the given ID
+    
   };
 
-  // Function to delete a task
-  const handleDeleteTask = (id: number) => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+  const handleCancelAppointment = (id: number) => {
+    // TODO: Remove the appointment with the given ID from the list
+    
   };
+
+  const handleChangePriority = (id: number, priority: Task['priority']) => {
+    // TODO: Update the priority of the appointment with the given ID
+    
+  };
+
+  // --- Filtering Logic ---
+  const filteredAppointments = appointments.filter(appointment => {
+    // TODO: Implement filtering logic based on priorityFilter and statusFilter
+    return true; // Replace with proper filtering logic
+  });
 
   return (
     <Card className="max-w-6xl mx-auto">
       <CardHeader>
-        <CardTitle>Task Manager</CardTitle>
+        <CardTitle>Patient Appointment Manager</CardTitle>
       </CardHeader>
       <CardContent>
-
-        <div className="task-input flex gap-2">
+        {/* Appointment Input Form */}
+        <div className="task-input flex flex-col sm:flex-row gap-2 mb-6 p-4 border rounded-lg shadow-sm">
           <Input
             type="text"
-            placeholder="Add a new task"
-            value={newTaskText}
-            onChange={(e) => setNewTaskText(e.target.value)}
+            placeholder="Enter patient name and reason for visit"
+            className="flex-grow"
             data-testid="task-input"
+            value={newAppointmentTitle}
+            onChange={handleNewAppointmentTitleChange}
           />
-          <Button onClick={handleAddTask} data-testid="add-task-button">Add Task</Button>
+          <Select
+            onValueChange={handleNewAppointmentPriorityChange}
+            value={newAppointmentPriority}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]" data-testid="priority-select">
+              <SelectValue placeholder="Select priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="low">Low Priority</SelectItem>
+              <SelectItem value="medium">Medium Priority</SelectItem>
+              <SelectItem value="high">High Priority</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            data-testid="add-task-button"
+            className="w-full sm:w-auto"
+            onClick={handleAddAppointment}
+          >
+            Schedule Appointment
+          </Button>
         </div>
 
-        <ul className="task-list" data-testid="task-list">
-          {tasks.map((task) => (
-            <li key={task.id} data-testid={`task-item-${task.id}`}>
-              <Checkbox
-                checked={task.completed}
-                onCheckedChange={() => handleToggleComplete(task.id)}
-                aria-label={`Mark ${task.title} as completed`}
+        {/* Filter Controls */}
+        <div className="filter-controls flex flex-col sm:flex-row gap-2 mb-6 p-4 border rounded-lg shadow-sm">
+          <Select
+            onValueChange={handlePriorityFilterChange}
+            value={priorityFilter}
+          >
+            <SelectTrigger className="w-full sm:w-[200px]" data-testid="filter-priority">
+              <SelectValue placeholder="Filter by priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Priorities</SelectItem>
+              <SelectItem value="low">Low Priority</SelectItem>
+              <SelectItem value="medium">Medium Priority</SelectItem>
+              <SelectItem value="high">High Priority</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select
+            onValueChange={handleStatusFilterChange}
+            value={statusFilter}
+          >
+            <SelectTrigger className="w-full sm:w-[200px]" data-testid="filter-status">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Appointments</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Appointment List */}
+        <ul className="task-list space-y-3" data-testid="task-list">
+          {filteredAppointments.map(task => (
+            <li
+              key={task.id}
+              data-testid={`task-item-${task.id}`}
+              className={`flex items-center gap-3 p-3 border rounded-lg shadow-sm transition-shadow duration-200 ${task.completed ? "bg-gray-100 opacity-70 hover:shadow-md" : "bg-white hover:shadow-md"}`}
+            // For conditional styling, candidate can use: className={cn("flex items-center gap-3 p-3 border rounded-lg", task.completed ? "bg-gray-100 opacity-70" : "bg-white")}
+            >
+              <Checkbox 
+                id={`task-checkbox-${task.id}`}
                 data-testid={`task-checkbox-${task.id}`}
+                checked={task.completed} 
+                onCheckedChange={() => handleToggleComplete(task.id)}
               />
-              <span className={cn(
-                task.completed ? 'line-through' : 'none'
-              )} data-testid={`task-title-${task.id}`}>
-                {task.title}
-              </span>
-              <Button
-                onClick={() => handleDeleteTask(task.id)}
-                aria-label={`Delete ${task.title}`}
-                variant="destructive"
-                data-testid={`delete-button-${task.id}`}
+              <label
+                htmlFor={`task-checkbox-${task.id}`}
+                className={`flex-grow cursor-pointer ${task.completed ? 'line-through text-gray-500' : ''}`}
+                data-testid={`task-title-${task.id}`}
               >
-                Delete Task
+                {task.title}
+              </label>
+              <Badge
+                data-testid={`task-priority-${task.id}`}
+                variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}
+              >
+                {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+              </Badge>
+              <Select
+                onValueChange={(newPriority) => handleChangePriority(task.id, newPriority as Task['priority'])}
+                value={task.priority}
+              >
+                <SelectTrigger className="w-[130px] text-xs h-8" data-testid={`task-priority-selector-${task.id}`}>
+                  <SelectValue placeholder="Change" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button 
+                variant="outline"
+                size="sm" 
+                data-testid={`delete-button-${task.id}`}
+                onClick={() => handleCancelAppointment(task.id)}
+              >
+                Cancel
               </Button>
             </li>
           ))}
+          {filteredAppointments.length === 0 && (
+            <li className="text-center text-gray-500 py-4">
+              No appointments scheduled or matching filters.
+            </li>
+          )}
         </ul>
       </CardContent>
-
     </Card>
   );
 }
