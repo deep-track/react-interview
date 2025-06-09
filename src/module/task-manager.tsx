@@ -8,34 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { cn } from "@/lib/utils"; // Candidate can uncomment if needed for conditional styling
+import { cn } from "@/lib/utils";
 
-// Patient Appointment Manager Component
-// Instructions for the candidate:
-// 1. Create a Patient Appointment Manager application that allows doctors to:
-//    - Add a new patient appointment with a description (non-empty string).
-//    - Cancel an existing appointment.
-//    - Mark appointments as completed after the patient has been seen.
-//    - Categorize appointments by priority (High, Medium, Low).
-//    - Filter appointments by priority and completion status.
-// 2. The appointment list should persist when appointments are added, canceled, or marked as completed.
-// 3. Display appointments in a list, showing their description, priority, and completion status.
-// 4. Include basic styling to make the UI clean and user-friendly (use the provided TaskManager.css file).
-// 5. Handle edge cases like empty appointment descriptions gracefully.
-// 6. Submit the completed TaskManager.jsx file by tomorrow.
-// Do NOT modify the import statements or the component name.
-
-// Example appointment object structure (for reference):
-// {
-//   id: number, // Unique identifier for the appointment
-//   title: string, // Appointment description (patient name, reason for visit, etc.)
-//   completed: boolean, // Whether the patient has been seen
-//   priority: string // Priority level: "high", "medium", or "low"
-// }
-
-// Define the Appointment interface
-// This interface will be used by the candidate in their implementation
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Task {
   id: number;
   title: string;
@@ -182,8 +156,7 @@ export default function TaskManager() {
             <li
               key={task.id}
               data-testid={`task-item-${task.id}`}
-              className={`flex items-center gap-3 p-3 border rounded-lg shadow-sm transition-shadow duration-200 ${task.completed ? "bg-gray-100 opacity-70 hover:shadow-md" : "bg-white hover:shadow-md"}`}
-            // For conditional styling, candidate can use: className={cn("flex items-center gap-3 p-3 border rounded-lg", task.completed ? "bg-gray-100 opacity-70" : "bg-white")}
+              className={cn("flex items-center gap-3 p-3 border rounded-lg shadow-sm transition-shadow duration-200", task.completed ? "bg-gray-100 opacity-70 hover:shadow-md" : "bg-white hover:shadow-md")}
             >
               <Checkbox 
                 id={`task-checkbox-${task.id}`}
